@@ -30,6 +30,13 @@ app.use(cors(corsOptions));
 
 app.use(express.json())
 
+app.get('/', (req, res) => {
+    res.send({
+        id: 1,
+        key: 'Working'
+    })
+})
+
 app.post('/create', async (req, res) => {
     console.log(req.body)
     try {
@@ -76,3 +83,5 @@ app.delete('/blogdetails/:title', async (req, res) => {
 app.listen(4000, () => {
     console.log('server is running');
 })
+
+module.exports = app;
