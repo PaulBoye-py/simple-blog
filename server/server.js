@@ -1,11 +1,33 @@
 const express = require('express');
 const app = express();
 const cors = require('cors')
-const mongoose = require('mongoose')
-const Blog = require('./models/blogmodel.js')
-mongoose.connect('mongodb://localhost:27017/blogdb')
+const Blog = require('./models/blogmodel.js');
+const db = require('./utils/connectMongo.js');
+require('./utils/connectMongo.js')
 
-app.use(cors())
+
+const allowedOrigins = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+]
+const corsOptions ={
+    origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else (
+            callback(new Error('Not allowed by CORS'))
+        )
+    },
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+};
+
+db
+// Middleware
+app.use(express.json());
+
+app.use(cors(corsOptions));
+
 app.use(express.json())
 
 app.post('/create', async (req, res) => {
